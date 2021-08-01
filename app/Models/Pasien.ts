@@ -5,15 +5,14 @@ import BookingRegistrasi from './BookingRegistrasi'
 export default class Pasien extends BaseModel {
   public static table = 'pasien'
 
-  @belongsTo(()=> BookingRegistrasi, {
-    localKey:'NoRM'
+  @belongsTo(() => BookingRegistrasi, {
+    localKey: 'NoRM',
   })
+  public bookingRegistrasi: BelongsTo<typeof BookingRegistrasi>
 
-  public bookingRegistrasi:BelongsTo<typeof BookingRegistrasi>
-
-  @column({ columnName:'no_rkm_medis', isPrimary: true })
+  @column({ columnName: 'no_rkm_medis', isPrimary: true })
   public NoRM: number
 
-  @column({ columnName:'nm_pasien'})
+  @column({ columnName: 'nm_pasien' })
   public NamaPasien: string
 }

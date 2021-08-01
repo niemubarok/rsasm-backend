@@ -1,8 +1,15 @@
 import Route from '@ioc:Adonis/Core/Route'
 
-Route.group(()=>{
-    Route.get('/pasien', 'PasiensController.index')
-    Route.post('/pasien', 'PasiensController.index')
-    Route.post('/registrasi/pasien-lama', 'RegistrasiController.pasienLama')
-    Route.post('/registrasi/pasien-baru', 'RegistrasiController.pasienBaru')
+Route.get('/', () => {
+  return "it's work"
+})
+
+Route.group(() => {
+  Route.get('/test', 'PendaftaranPasienLamaController.test')
+  Route.get('/pasien', 'PasiensController.index')
+  Route.post('/pasien', 'PasiensController.index')
+  Route.post('/pendaftaran/pasien-lama', 'PendaftaranPasienLamaController.store').middleware(
+    'getPasien'
+  )
+  // Route.post('/pendaftaran/pasien-baru', 'PendaftaranController.pasienBaru')
 }).prefix('/api')
