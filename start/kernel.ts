@@ -40,4 +40,5 @@ Server.middleware.register([() => import('@ioc:Adonis/Core/BodyParser')])
 */
 Server.middleware.registerNamed({
   getPasien: () => import('App/Middleware/GetPasien'),
+  dokter: () => import('App/Middleware/DokterMiddleware'),
 })

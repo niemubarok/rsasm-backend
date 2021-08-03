@@ -1,5 +1,5 @@
 // import { DateTime } from 'luxon'
-import { BaseModel, BelongsTo, belongsTo, column, HasMany, hasMany } from '@ioc:Adonis/Lucid/Orm'
+import { BaseModel, BelongsTo, belongsTo, column } from '@ioc:Adonis/Lucid/Orm'
 import BookingRegistrasi from './BookingRegistrasi'
 
 export default class Pasien extends BaseModel {
