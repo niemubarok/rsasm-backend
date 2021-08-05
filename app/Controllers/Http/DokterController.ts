@@ -1,47 +1,20 @@
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
-// import Dokter from 'App/Models/Dokter'
-import JadwalDokter from 'App/Models/JadwalDokter'
-import Poliklinik from 'App/Models/Poliklinik'
-import { getHariIni } from 'App/services/utils'
+import Database from '@ioc:Adonis/Lucid/Database'
 
 export default class DokterController {
-  public async index({ response }: HttpContextContract) {
-    //Get dokter yang praktek hari ini
-    const hariIni = getHariIni()
-    const dokterHariIni = JadwalDokter.query().preload('dokter').where('HariKerja', hariIni)
+  public async index({ request, response }: HttpContextContract) {
+    const hariKerja = request.body().data.hari
 
-    const namaPoli = dokterHariIni.then((data) => {
-      return data.forEach(async (each) => {
-        const poli = await Poliklinik.query().where('kd_poli', each.kodePoli).first()
-        console.log(poli?.namaPoli)
-        return poli
-      })
+    const jadwal = await Database.rawQuery(
+      'select jadwal.kd_dokter, jadwal.kd_poli, jadwal.hari_kerja, jadwal.jam_mulai, jadwal.jam_selesai, dokter.nm_dokter,poliklinik.nm_poli, praktek_dokter.isPraktek from jadwal inner join dokter on `jadwal`.`kd_dokter` = `dokter`.`kd_dokter` inner join poliklinik on `jadwal`.`kd_poli`=`poliklinik`.`kd_poli` inner join praktek_dokter on `jadwal`.`kd_dokter` = `praktek_dokter`.`kd_dokter` WHERE jadwal.hari_kerja = ?',
+      [hariKerja]
+    )
+
+    // console.log(jadwal)
+
+    response.status(200).json({
+      data: jadwal[0],
     })
-
-    console.log(await namaPoli)
-
-    response.json({
-      namaPoli: await namaPoli,
-      data: await dokterHariIni,
-    })
-    // console.log(await dokter)
-
-    // const poli = await Poliklinik.query().preload('jadwalDokter')
-    //Get dokter yang praktek sesuai tanggal yang dicari
-    // return dokter
-    // response.json({
-    //   data: {
-    //     id: await dokter,
-    //     name: 'dr. Vincent',
-    //     specialist: 'Gigi',
-    //     date: '14-06-2021',
-    //     time: {
-    //       start: '07.50',
-    //       end: '08.50',
-    //     },
-    //     url: 'https://cdn.quasar.dev/img/avatar4.jpg',
-    //   },
-    // })
   }
 
   public async create({}: HttpContextContract) {}

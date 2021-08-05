@@ -14,14 +14,6 @@ export default class PendaftaranPasienLamaController {
       qrcode: await createQRCode(),
       message: 'haaai',
     })
-
-    // console.log(await createQRCode());
-
-    // console.log(
-    //   createQRCode().then((qrcode) => {
-    //     return qrcode
-    //   })
-    // )
   }
 
   public async store({ request, response }: HttpContextContract) {
@@ -75,6 +67,10 @@ export default class PendaftaranPasienLamaController {
           contact: '6285524914191',
           message: 'haaai',
           qrcode: await createQRCode(),
+        })
+      }else{ //jika gagal memasukan data ke booking tabel
+        response.status(500).json({
+          message: "gagal insert data"
         })
       }
     } catch (error) {

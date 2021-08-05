@@ -16,5 +16,5 @@ Route.group(() => {
   // Route.post('/pendaftaran/pasien-baru', 'PendaftaranController.pasienBaru')
 
   // DOKTER
-  Route.get('dokter', 'DokterController.index')
+  Route.post('dokter', 'DokterController.index')
 }).prefix('/api')

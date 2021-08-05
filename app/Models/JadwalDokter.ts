@@ -2,7 +2,7 @@ import { DateTime } from 'luxon'
 import { BaseModel, column, HasMany, hasMany } from '@ioc:Adonis/Lucid/Orm'
 import Dokter from './Dokter'
 // import Spesialis from './Spesialis'
-// import Poliklinik from './Poliklinik'
+import Poliklinik from './Poliklinik'
 
 export default class JadwalDokter extends BaseModel {
   public static table = 'jadwal'
@@ -12,10 +12,10 @@ export default class JadwalDokter extends BaseModel {
   })
   public dokter: HasMany<typeof Dokter>
 
-  // @hasMany(() => Poliklinik, {
-  //   foreignKey: 'id',
-  // })
-  // public poliklinik: HasMany<typeof Poliklinik>
+  @hasMany(() => Poliklinik, {
+    foreignKey: 'id',
+  })
+  public poliklinik: HasMany<typeof Poliklinik>
 
   @column({ columnName: 'kd_dokter', isPrimary: true })
   public id: string
