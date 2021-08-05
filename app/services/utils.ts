@@ -7,11 +7,12 @@ const createQRCode = () => {
   })
 }
 
-const getHariIni = () => {
-  const hari = ['sabtu', 'akhad', 'senin', 'selasa', 'rabu', 'kamis', 'jumat']
-  const getDayNumber = DateTime.now().get('day')
-  const hariIni = hari[getDayNumber]
-  return hariIni
+const getHari = (dayNumber: number) => {
+  const listHari = ['akhad', 'senin', 'selasa', 'rabu', 'kamis', 'jumat', 'sabtu']
+  // const getDayNumber = DateTime.now().get('day')
+  console.log(listHari[dayNumber])
+
+  return listHari[dayNumber]
 }
 
-export { createQRCode, getHariIni }
+export { createQRCode, getHari }
