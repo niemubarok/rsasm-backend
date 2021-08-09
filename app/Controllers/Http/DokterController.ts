@@ -13,8 +13,6 @@ export default class DokterController {
       [hariKerja]
     )
 
-    console.log(jadwal[0])
-
     response.status(200).json({
       data: jadwal[0],
     })
