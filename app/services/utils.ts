@@ -10,9 +10,10 @@ const createQRCode = () => {
 const getHari = (dayNumber: number) => {
   const listHari = ['akhad', 'senin', 'selasa', 'rabu', 'kamis', 'jumat', 'sabtu']
   // const getDayNumber = DateTime.now().get('day')
-  console.log(listHari[dayNumber])
+  // console.log(listHari[dayNumber])
 
   return listHari[dayNumber]
 }
+
 
 export { createQRCode, getHari }

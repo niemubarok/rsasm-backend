@@ -9,7 +9,8 @@ Route.group(() => {
 
   // PASIEN
   Route.get('/pasien', 'PasiensController.index')
-  Route.post('/pasien', 'PasiensController.index')
+  Route.post('/pasien', 'PasiensController.index').middleware('getPasien')
+  Route.post('/pasien/store', 'PasiensController.store')
   Route.post('/pendaftaran/pasien-lama', 'PendaftaranPasienLamaController.store').middleware(
     'getPasien'
   )

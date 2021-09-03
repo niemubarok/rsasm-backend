@@ -15,7 +15,7 @@ export default class GetPasien {
         .first()
 
       if (!pasien) {
-        response.status(404).json({
+        response.status(200).json({
           message: 'pasien tidak ditemukan',
           isPasienBaru: true,
         })
