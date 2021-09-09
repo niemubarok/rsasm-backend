@@ -15,4 +15,6 @@ export default class Pasien extends BaseModel {
 
   @column({ columnName: 'nm_pasien' })
   public NamaPasien: string
+  @column({ columnName: 'tgl_lahir' })
+  public TglLahir: string
 }

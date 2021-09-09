@@ -5,7 +5,7 @@ Route.get('/', () => {
 })
 
 Route.group(() => {
-  Route.get('/test', 'PendaftaranPasienLamaController.test')
+  Route.post('/test', 'PendaftaranPasienLamaController.test').middleware('getPasien')
 
   // PASIEN
   Route.get('/pasien', 'PasiensController.index')
