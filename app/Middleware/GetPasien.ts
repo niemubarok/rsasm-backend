@@ -19,9 +19,10 @@ export default class GetPasien {
     const { data: req } = request.body()
 
     let dataToReturn = {}
-    let noKartuBPJS = ''
+    // let noKartuBPJS = ''
 
     try {
+      // Jika KTP 
       //AMBIL DATA DARI API BPJS (NAMA DAN TGL LAHIR)
       await axios
         .get(
@@ -53,6 +54,7 @@ export default class GetPasien {
             //CARI PASIEN DI DATABASE
             const pasienFromDB = await Pasien.query()
               .where('no_ktp', req.noKtp)
+              .where('nm_pasien', 'like', `%${resData.nama_pasien}%`)
               .orWhere((query) => {
                 query.where('nm_pasien', 'like', `%${resData.nama_pasien}%`).where('tgl_lahir', resData.tgl_lahir)
               })
