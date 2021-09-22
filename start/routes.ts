@@ -11,9 +11,7 @@ Route.group(() => {
   Route.get('/pasien', 'PasiensController.index')
   Route.post('/pasien', 'PasiensController.index').middleware('getPasien')
   Route.post('/pasien/store', 'PasiensController.store')
-  Route.post('/pendaftaran/pasien-lama', 'PendaftaranPasienLamaController.store').middleware(
-    'getPasien'
-  )
+  Route.post('/pendaftaran/pasien-lama', 'PendaftaranPasienLamaController.store')
   // Route.post('/pendaftaran/pasien-baru', 'PendaftaranController.pasienBaru')
 
   // DOKTER

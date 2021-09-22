@@ -15,5 +15,4 @@ const getHari = (dayNumber: number) => {
   return listHari[dayNumber]
 }
 
-
 export { createQRCode, getHari }
