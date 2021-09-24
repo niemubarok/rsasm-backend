@@ -6,6 +6,7 @@ import { DateTime } from 'luxon'
 import { createQRCode } from 'App/services/utils'
 // import axios from 'axios'
 // import QrCode from 'qrcode'
+import { padNumber } from 'App/services/utils'
 
 export default class PendaftaranPasienLamaController {
   public async test({ request, response }: HttpContextContract) {
@@ -24,41 +25,45 @@ export default class PendaftaranPasienLamaController {
   public async store({ request, response }: HttpContextContract) {
     // return request.original()
     //Mengambil data dari request original
-    const { data } = request.original()
+    // const { data } = request.original()
 
     //mengambil data dari request yang sudah diupdate di middleware getPasien
-    const { noRM } = request.body()
+    const { data } = request.body()
+    const noRM = data.pasien.noRM
 
-    console.log(noRM)
-    console.log(data)
-    return false
+    // console.log(kodeDokter)
+    // return data.kodeDokter
 
     //mengambil nomor antrian terakhir dari tabel booking registrasi
     //berdasarkan tgl periksa, kode dokter dan kode poli
     const getMaxAntrian = Database.from('booking_registrasi')
-      .where('tanggal_periksa', data.tgl_periksa)
-      .where('kd_dokter', data.kd_dokter)
-      .where('kd_poli', data.kd_poli)
+      .where('tanggal_periksa', data.pasien.tgl_periksa)
+      .where('kd_dokter', data.kodeDokter)
+      .where('kd_poli', data.kodePoli)
       .max('no_reg as no_antrian')
       .first()
 
     //nomor antrian selanjutnya
-    const noAntrian = getMaxAntrian.then((antrian) => {
-      return parseInt(antrian.no_antrian) + 1 || 1
+    const antrian = getMaxAntrian.then((antrian) => {
+      const next = parseInt(antrian.no_antrian) + 1
+      return next || 1
     })
+    // Tambahkan 3 angka sebelum nomor
+
+    const noAntrian = padNumber(await antrian, 3)
 
     //CEK DULU APAKAH PASIEN SUDAH TERDAFTAR KE DOKTER YANG SAMA DAN HARI YANG SAMA
     const isPatientRegistered = await BookingRegistrasi.query()
       .where('no_rkm_medis', noRM)
       .where('tanggal_periksa', data.tgl_periksa)
-      .where('kd_dokter', data.kd_dokter)
-      .where('kd_poli', data.kd_poli)
+      .where('kd_dokter', data.kodeDokter)
+      .where('kd_poli', data.kodePoli)
       .first()
 
-    console.log('isPatientRegistered:' + isPatientRegistered)
+    // return 'isregistered' + isPatientRegistered
 
     //jika pasien sudah terdaftar
-    if (isPatientRegistered) {
+    if (isPatientRegistered !== null) {
       response.status(200).json({
         data: {
           isRegistered: true,
@@ -67,47 +72,51 @@ export default class PendaftaranPasienLamaController {
     } else {
       //JIKA PASIEN BELUM TERDAFTAR
       //DAFTARKAN DI BOOKING TABLE
-      try {
-        //insert data ke table booking registrasi
-        const bookingTable = await BookingRegistrasi.create({
-          TanggalBooking: DateTime.now(),
-          JamBooking: DateTime.now().toFormat('HH:MM:ss'),
-          TanggalPeriksa: data.tgl_periksa,
-          CheckIn: '',
-          NoRM: noRM,
-          KodeDokter: data.kd_dokter,
-          KodePoli: data.kd_poli,
-          KodePJ: data.kd_pj,
-          NomorAntrian: await noAntrian,
-          status: 'Belum',
+      // try {
+      //insert data ke table booking registrasi
+      const bookingTable = await BookingRegistrasi.create({
+        TanggalBooking: DateTime.now(),
+        JamBooking: DateTime.now().toFormat('HH:MM:ss'),
+        TanggalPeriksa: data.pasien.tgl_periksa,
+        CheckIn: data.pasien.tgl_periksa,
+        NoRM: noRM,
+        KodeDokter: data.kodeDokter,
+        KodePoli: data.kodePoli,
+        KodePJ: data.pasien.kd_pj,
+        NomorAntrian: await noAntrian,
+        LimitReg: 1,
+        status: 'Belum',
+      })
+
+      console.log(bookingTable.$isPersisted)
+
+      //JIKA BERHASIL INSERT DATA KE TABEL BOOKING REGISTRASI
+      if (bookingTable.$isPersisted) {
+        //kirim response ke frontend
+        response.status(201).json({
+          message: 'sudah terdaftar',
+          nomorAntrian: await noAntrian,
+          qrcode: createQRCode(),
         })
 
-        console.log(bookingTable.$isPersisted)
-
-        //JIKA BERHASIL INSERT DATA KE TABEL BOOKING REGISTRASI
-        if (bookingTable.$isPersisted) {
-          //kirim response ke frontend
-          response.status(201).json({
-            message: 'sudah terdaftar',
-            nomorAntrian: noAntrian,
-            qrcode: createQRCode(),
-          })
-
-          // kirim whatsapp ke pasien
-          // sendWhatsappMessage({
-          //   contact: '6285524914191',
-          //   message: 'haaai',
-          //   qrcode: await createQRCode(),
-          // })
-        } else {
-          //jika gagal memasukan data ke booking tabel
-          response.status(500).json({
-            message: 'gagal insert data',
-          })
-        }
-      } catch (error) {
-        console.log(error)
+        // kirim whatsapp ke pasien
+        // sendWhatsappMessage({
+        //   contact: '6285524914191',
+        //   message: 'haaai',
+        //   qrcode: await createQRCode(),
+        // })
+        //jika gagal memasukan data ke booking tabel
+      } else {
+        response.status(500).json({
+          message: 'gagal insert data',
+        })
       }
+
+      // } catch (error) {
+      //
+      //   // return 'error'
+      //   console.log(error)
+      // }
     }
   }
 }

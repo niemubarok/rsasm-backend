@@ -14,7 +14,6 @@ export default class GetPasien {
         .where('no_ktp', req.noKtp)
         // .where('nm_pasien', 'like', `%${req.namaPasien}%`)
         .orWhere((query) => {
-          console.log(req.namaPasien)
           query.where('nm_pasien', 'like', `%${req.namaPasien}%`).where('tgl_lahir', req.tglLahir)
         })
         .first()
@@ -36,6 +35,7 @@ export default class GetPasien {
           pasien: dataToReturn,
           original_request: request.body(),
         })
+
         await next()
         // response.json({
         //   data: {

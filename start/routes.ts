@@ -5,14 +5,14 @@ Route.get('/', () => {
 })
 
 Route.group(() => {
-  Route.post('/test', 'PendaftaranPasienLamaController.test').middleware('getPasien')
+  Route.post('/test', 'BookingController.test')
 
   // PASIEN
   Route.get('/pasien', 'PasiensController.index')
   Route.post('/pasien', 'PasiensController.index').middleware('getPasien')
   Route.post('/pasien/store', 'PasiensController.store')
-  Route.post('/pendaftaran/pasien-lama', 'PendaftaranPasienLamaController.store')
-  // Route.post('/pendaftaran/pasien-baru', 'PendaftaranController.pasienBaru')
+  Route.post('/pendaftaran', 'BookingController.store').middleware('storePasienBaru')
+  // Route.post('/pendaftaran/pasien-baru', 'BookingController.store').middleware('storePasienBaru')
 
   // DOKTER
   Route.post('dokter', 'DokterController.index')

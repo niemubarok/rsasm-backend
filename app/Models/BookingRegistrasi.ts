@@ -20,7 +20,7 @@ export default class BookingRegistrasi extends BaseModel {
   public TanggalPeriksa: DateTime
 
   @column({ columnName: 'waktu_kunjungan' })
-  public CheckIn: string
+  public CheckIn: DateTime
 
   @column({ columnName: 'no_rkm_medis', isPrimary: true })
   public NoRM: number
@@ -33,6 +33,9 @@ export default class BookingRegistrasi extends BaseModel {
 
   @column({ columnName: 'kd_pj' })
   public KodePJ: string
+
+  @column({ columnName: 'limit_reg' })
+  public LimitReg: number
 
   @column({ columnName: 'no_reg' })
   public NomorAntrian: any
