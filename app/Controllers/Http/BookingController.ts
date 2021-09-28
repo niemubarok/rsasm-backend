@@ -29,13 +29,14 @@ export default class BookingController {
     const noRM = request.body().data.pasien.noRM
 
     const tglPeriksa = formatDate(data.pasien.tgl_periksa, DateTime.DATE_HUGE)
+    const noWhatsapp = data.pasien.phone.replace('0', '62')
 
     //mengambil nomor antrian terakhir dari tabel booking registrasi
     //berdasarkan tgl periksa, kode dokter dan kode poli
     const getMaxAntrian = Database.from('booking_registrasi')
       .where('tanggal_periksa', data.pasien.tgl_periksa)
-      .where('kd_dokter', data.dokter.id)
-      .where('kd_poli', data.dokter.kd_poli)
+      .where('kd_dokter', data.kodeDokter)
+      .where('kd_poli', data.kodePoli)
       .max('no_reg as no_antrian')
       .first()
 
@@ -45,23 +46,50 @@ export default class BookingController {
       return next || 1
     })
     // Tambahkan 3 angka sebelum nomor
-    const noAntrian = padNumber(await antrian, 3)
+    const nextAntrian = padNumber(await antrian, 3)
+    // const noAntrian() = '11'
+    //Estimasi kedatangan pasien
 
     //CEK DULU APAKAH PASIEN SUDAH BOOKING KE DOKTER YANG SAMA DAN HARI YANG SAMA
     const isBooked = await BookingRegistrasi.query()
       .where('no_rkm_medis', noRM)
       .where('tanggal_periksa', data.tglPeriksa)
-      .where('kd_dokter', data.dokter.id)
-      .where('kd_poli', data.dokter.kd_poli)
+      // .where('kd_dokter', data.kodeDokter)
+      // .where('kd_poli', data.kodePoli)
       .first()
 
     //CEK JUGA APAKAH SUDAH TERDAFTAR
     const isRegistered = await Registration.query()
       .where('no_rkm_medis', noRM)
       .where('tgl_registrasi', data.tglPeriksa)
-      .where('kd_dokter', data.dokter.id)
-      .where('kd_poli', data.dokter.kd_poli)
+      // .where('kd_dokter', data.kodeDokter)
+      // .where('kd_poli', data.kodePoli)
       .first()
+
+    const noAntrian = () => {
+      if (isBooked?.NomorAntrian) {
+        return isBooked?.NomorAntrian
+      } else if (isRegistered?.NoAntrian) {
+        return isRegistered?.NoAntrian
+      } else {
+        return nextAntrian
+      }
+    }
+
+    const jamDatang = () => {
+      const jamMulai = data.dokter.time.start.slice(0, -3)
+      const jamSelesai = data.dokter.time.end.slice(0, -3)
+
+      const menit = jamMulai.slice(-2)
+
+      if (parseInt(noAntrian()) <= 10) {
+        return `${jamMulai.slice(0, -3)}:${menit} s/d ${
+          parseInt(jamMulai.slice(0, -3)) + 1
+        }:${menit}`
+      } else {
+        return `${parseInt(jamMulai.slice(0, -3)) + 1}:${menit} s/d ${jamSelesai}`
+      }
+    }
 
     //jika pasien sudah terdaftar
     if (isBooked !== null || isRegistered !== null) {
@@ -70,6 +98,9 @@ export default class BookingController {
           registrationDetail: isRegistered,
           bookDetail: isBooked,
           isRegistered: true,
+          nomorAntrian: noAntrian(),
+          jamDatang: jamDatang(),
+          qrcode: await createQRCode(),
         },
       })
     } else {
@@ -82,10 +113,10 @@ export default class BookingController {
         TanggalPeriksa: data.pasien.tgl_periksa,
         CheckIn: data.pasien.tgl_periksa,
         NoRM: noRM,
-        KodeDokter: data.dokter.id,
-        KodePoli: data.dokter.kd_poli,
+        KodeDokter: data.kodeDokter,
+        KodePoli: data.kodePoli,
         KodePJ: data.pasien.kd_pj,
-        NomorAntrian: noAntrian,
+        NomorAntrian: noAntrian(),
         LimitReg: 1,
         status: 'Belum',
       })
@@ -94,8 +125,9 @@ export default class BookingController {
         //kirim response ke frontend
         response.status(201).json({
           message: 'Berhasil terdaftar',
-          nomorAntrian: noAntrian,
-          qrcode: createQRCode(),
+          nomorAntrian: noAntrian(),
+          jamDatang: jamDatang(),
+          qrcode: await createQRCode(),
         })
 
         // const tglPeriksa = new Date(data.pasien.tgl_periksa)
@@ -106,14 +138,14 @@ export default class BookingController {
           `\nNama: *${data.pasien.name}*` +
           `\nNo. RM: *${noRM}*` +
           `\nKlinik : *${data.namaPoli.trim()}*` +
-          `\nDokter: *${data.dokter.name}*` +
+          `\nDokter: *${data.namaDokter}*` +
           '\nTanggal Periksa: *' +
           tglPeriksa +
           '*' +
           // "\nJam praktek : pkl+ ${jamMulai} s/d ${jamSelesai}+" +
-          // '\n*Jam Kedatangan: PKL+ ' +
+          `\n*Estimasi dipanggil: ${jamDatang()}*` +
           '\nNo. Antrian : *' +
-          noAntrian +
+          noAntrian() +
           '*' +
           '\n_________________________________' +
           '\n⚠️ *PASTIKAN ANDA HADIR PADA SAAT DIPANGGIL*' +
@@ -127,8 +159,8 @@ export default class BookingController {
           '😷 MENGGUNAKAN MASKER  '
 
         // kirim whatsapp ke pasien
-        sendWhatsappMessage({
-          contact: '6285524914191',
+        await sendWhatsappMessage({
+          contact: noWhatsapp,
           message,
         })
         // qrcode: await createQRCode(),

@@ -37,12 +37,6 @@ export default class GetPasien {
         })
 
         await next()
-        // response.json({
-        //   data: {
-        //     pasien: { dataToReturn },
-        //     original_request: request.body()
-        //   }
-        // })
       }
     } catch (error) {
       console.log(error)

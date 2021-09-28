@@ -11,7 +11,6 @@ export default class StorePasienBaru {
     const noRM = async () => {
       //ambil no rm terakhir
       const lastRM = await Database.from('set_no_rkm_medis').first()
-      // console.log(lastRM)
 
       //tambah 1
       const nextRM = Number(await lastRM?.no_rkm_medis) + 1
