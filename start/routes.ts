@@ -17,4 +17,7 @@ Route.group(() => {
   // DOKTER
   Route.post('dokter', 'DokterController.index')
   Route.post('poli', 'PoliController.index')
+
+  //Setting
+  Route.get('settings', 'SettingsController.index')
 }).prefix('/api')
