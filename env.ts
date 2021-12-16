@@ -31,6 +31,8 @@ export default Env.rules({
   MYSQL_PASSWORD: Env.schema.string.optional(),
   MYSQL_DB_NAME: Env.schema.string(),
 
+  SESSION_DRIVER: Env.schema.string(),
+
   // * The MYSQL_HOST should always be present and formatted as a valid host.
   // * The MYSQL_PORT should always be present and a valid number.
   // * The MYSQL_USER and MYSQL_PASSWORD are required to authenticate with the database server. The password ismarked as optional since many local database servers are configured to work without passwords.

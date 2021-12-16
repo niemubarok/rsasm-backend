@@ -5,7 +5,6 @@ export default class GetPasien {
   public async handle({ request, response }: HttpContextContract, next: () => Promise<void>) {
     //AMBIL DATA PASIEN DARI FRONTEND
     const { data: req } = request.body()
-
     let dataToReturn = {}
 
     try {

@@ -1,5 +1,5 @@
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
-import Setting from 'App/Models/Setting'
+import Setting from 'App/Models/KhanzaSetting'
 
 export default class SettingsController {
   public async index({ response }: HttpContextContract) {
@@ -8,16 +8,4 @@ export default class SettingsController {
       data: setting,
     })
   }
-
-  public async create({}: HttpContextContract) {}
-
-  public async store({}: HttpContextContract) {}
-
-  public async show({}: HttpContextContract) {}
-
-  public async edit({}: HttpContextContract) {}
-
-  public async update({}: HttpContextContract) {}
-
-  public async destroy({}: HttpContextContract) {}
 }

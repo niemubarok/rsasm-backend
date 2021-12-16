@@ -42,4 +42,5 @@ Server.middleware.registerNamed({
   getPasien: () => import('App/Middleware/GetPasien'),
   dokter: () => import('App/Middleware/DokterMiddleware'),
   storePasienBaru: () => import('App/Middleware/StorePasienBaru'),
+  auth: () => import('App/Middleware/Auth'),
 })

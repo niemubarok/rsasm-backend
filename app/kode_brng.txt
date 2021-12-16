@@ -1,0 +1,13 @@
+kode_brng
+h_beli
+tanggal
+stok
+real
+selisih
+nomihilang
+lebih
+nomilebih
+keterangan
+kd_bangsal
+no_batch
+no_faktur

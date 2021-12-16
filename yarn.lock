@@ -52,6 +52,15 @@
     picomatch "^2.3.0"
     slash "^3.0.0"
 
+"@adonisjs/auth@^8.0.10":
+  version "8.0.10"
+  resolved "https://registry.yarnpkg.com/@adonisjs/auth/-/auth-8.0.10.tgz#7d89aac9a57a6ce79cfff58e1a45af5cda65cfef"
+  integrity sha512-jE2C0btUresr1pRV1P8NAehSJlebJ+TlrQp1p1ws52AQ5h4ayjzTniZBtq6pSgm5uv6TAEQ7Mw7ZfTOwaA8MBQ==
+  dependencies:
+    "@poppinss/hooks" "^3.0.5"
+    "@poppinss/utils" "^3.2.0"
+    luxon "^2.0.2"
+
 "@adonisjs/bodyparser@^7.1.4":
   version "7.1.4"
   resolved "https://registry.npmjs.org/@adonisjs/bodyparser/-/bodyparser-7.1.4.tgz"
@@ -224,6 +233,14 @@
     pirates "^4.0.1"
     rev-hash "^3.0.0"
     source-map-support "^0.5.19"
+
+"@adonisjs/session@^6.1.2":
+  version "6.1.2"
+  resolved "https://registry.yarnpkg.com/@adonisjs/session/-/session-6.1.2.tgz#60396c08fbe02de3acd8ab84d2e573c147b68653"
+  integrity sha512-xXmn93b32XruL/zJ+h9Dea/RGneMhenp369PA55VV9Fnxjxf3ElmqMnZYoJ5HYCxbey0NnNODZ9co74+PCVbtw==
+  dependencies:
+    "@poppinss/utils" "^3.2.0"
+    fs-extra "^10.0.0"
 
 "@adonisjs/sink@^5.1.5":
   version "5.1.5"
@@ -398,7 +415,7 @@
     color-support "^1.1.3"
     kleur "^4.1.4"
 
-"@poppinss/hooks@^3.0.4":
+"@poppinss/hooks@^3.0.4", "@poppinss/hooks@^3.0.5":
   version "3.0.5"
   resolved "https://registry.npmjs.org/@poppinss/hooks/-/hooks-3.0.5.tgz"
   integrity sha512-kazQstmIPq4n7/qjk5ms9SEiXtLEJ+EMZXxyXTupTVq7URFIUeULgXFv/F3vheLPCSzfByu/L2iO7M457RjszQ==
@@ -452,6 +469,29 @@
     require-all "^3.0.0"
     resolve-from "^5.0.0"
     slugify "^1.6.0"
+    truncatise "0.0.8"
+
+"@poppinss/utils@^3.2.0":
+  version "3.3.1"
+  resolved "https://registry.yarnpkg.com/@poppinss/utils/-/utils-3.3.1.tgz#66f44282af0b8fcb0b802553d7fed9be0b520ce1"
+  integrity sha512-k4MFt+4JhOWJZ9D2xpEcG/mpZyXVXYT+dSOg83vHK1xhXl+7r0IYBXRKWX2+To7/90KJaWlwpcdCAalXE8Debg==
+  dependencies:
+    "@types/bytes" "^3.1.1"
+    "@types/he" "^1.1.2"
+    buffer-alloc "^1.2.0"
+    bytes "^3.1.0"
+    change-case "^4.1.2"
+    cuid "^2.1.8"
+    flattie "^1.1.0"
+    fs-readdir-recursive "^1.1.0"
+    he "^1.2.0"
+    kind-of "^6.0.3"
+    lodash "^4.17.21"
+    ms "^2.1.3"
+    pluralize "^8.0.0"
+    require-all "^3.0.0"
+    resolve-from "^5.0.0"
+    slugify "^1.6.1"
     truncatise "0.0.8"
 
 "@tokenizer/token@^0.1.1":
@@ -1879,6 +1919,11 @@ flatted@^3.1.0:
   resolved "https://registry.npmjs.org/flatted/-/flatted-3.2.1.tgz"
   integrity sha512-OMQjaErSFHmHqZe+PSidH5n8j3O0F2DdnVh8JB4j4eUQ2k6KvB0qGfrKIhapvez5JerBbmWkaLYUYWISaESoXg==
 
+flattie@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/flattie/-/flattie-1.1.0.tgz#1459504209f2001c478751b4e2fb69d6b1ee3241"
+  integrity sha512-xU99gDEnciIwJdGcBmNHnzTJ/w5AT+VFJOu6sTB6WM8diOYNA3Sa+K1DiEBQ7XH4QikQq3iFW1U+jRVcotQnBw==
+
 follow-redirects@^1.10.0:
   version "1.14.1"
   resolved "https://registry.npmjs.org/follow-redirects/-/follow-redirects-1.14.1.tgz"
@@ -2670,6 +2715,11 @@ luxon@^2.0.1:
   version "2.0.1"
   resolved "https://registry.npmjs.org/luxon/-/luxon-2.0.1.tgz"
   integrity sha512-8Eawf81c9ZlQj62W3eq4mp+C7SAIAnmaS7ZuEAiX503YMcn+0C1JnMQRtfaQj6B5qTZLgHv0F4H5WabBCvi1fw==
+
+luxon@^2.0.2:
+  version "2.1.1"
+  resolved "https://registry.yarnpkg.com/luxon/-/luxon-2.1.1.tgz#34052f7a33a7989767637be7cf80b47db264ff88"
+  integrity sha512-6VQVNw7+kQu3hL1ZH5GyOhnk8uZm21xS7XJ/6vDZaFNcb62dpFDKcH8TI5NkoZOdMRxr7af7aYGrJlE/Wv0i1w==
 
 macroable@^5.1.3, macroable@^5.1.4:
   version "5.1.4"
@@ -3764,6 +3814,11 @@ slugify@^1.6.0:
   version "1.6.0"
   resolved "https://registry.npmjs.org/slugify/-/slugify-1.6.0.tgz"
   integrity sha512-FkMq+MQc5hzYgM86nLuHI98Acwi3p4wX+a5BO9Hhw4JdK4L7WueIiZ4tXEobImPqBz2sVcV0+Mu3GRB30IGang==
+
+slugify@^1.6.1:
+  version "1.6.3"
+  resolved "https://registry.yarnpkg.com/slugify/-/slugify-1.6.3.tgz#325aec50871acfb17976f2d3cb09ee1e7ab563be"
+  integrity sha512-1MPyqnIhgiq+/0iDJyqSJHENdnH5MMIlgJIBxmkRMzTNKlS/QsN5dXsB+MdDq4E6w0g9jFA4XOTRkVDjDae/2w==
 
 smpltmpl@^1.0.2:
   version "1.0.2"
