@@ -83,9 +83,8 @@ export default class BookingController {
       const menit = jamMulai.slice(-2)
 
       if (parseInt(noAntrian()) <= 10) {
-        return `${jamMulai.slice(0, -3)}:${menit} s/d ${
-          parseInt(jamMulai.slice(0, -3)) + 1
-        }:${menit}`
+        return `${jamMulai.slice(0, -3)}:${menit} s/d ${parseInt(jamMulai.slice(0, -3)) + 1
+          }:${menit}`
       } else {
         return `${parseInt(jamMulai.slice(0, -3)) + 1}:${menit} s/d ${jamSelesai}`
       }
@@ -162,8 +161,8 @@ export default class BookingController {
         await sendWhatsappMessage({
           contact: noWhatsapp,
           message,
+          qrcode: await createQRCode(),
         })
-        // qrcode: await createQRCode(),
         //jika gagal memasukan data ke booking tabel
       } else {
         response.status(500).json({

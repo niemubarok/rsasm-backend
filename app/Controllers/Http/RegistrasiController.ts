@@ -52,7 +52,7 @@ export default class RegistrasiController {
       })
 
       //Jika pasien sudah terdaftar
-      if (isRegistered) {
+      if (await isRegistered) {
         //jika sudah terdaftar ke dokter yang sama dan hari yang sama
         //ambil nomor antrian pendaftaran sebelumnya
         const antrianTerdaftar = await dataBooking.then((data) => {
@@ -114,7 +114,7 @@ export default class RegistrasiController {
     }
   }
 
-  public async pasienBaru({ request, response }: HttpContextContract) {
+  public async pasienBaru({ request }: HttpContextContract) {
     const req = request.body().data?.detail_pasien
     const tglLahir = new Date(req.tgl_lahir)
     const umur = () => {
