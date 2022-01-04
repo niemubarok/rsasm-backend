@@ -34,7 +34,6 @@ export default class OpnameController {
   public async store({ request, response }: HttpContextContract) {
     //define variable
     const req = request.body().data
-    // return req
     const kode_brng = req.kode_brng
     const kd_bangsal = req.kd_bangsal
     const h_beli = req.h_beli
@@ -43,10 +42,12 @@ export default class OpnameController {
     const minute = date.getMinutes()
     const second = date.getSeconds()
     const jam = `${hour}:${minute}:${second}`
-    const year = date.getFullYear()
-    const month = date.getMonth() + 1
-    const day = date.getDate()
-    const tanggal = year + "-" + month + "-" + day
+    // const year = date.getFullYear()
+    // const month = date.getMonth() + 1
+    // const day = date.getDate()
+    const tanggal = "2021-12-26"
+    const expire = req.expire
+
 
 
 
@@ -110,13 +111,7 @@ export default class OpnameController {
 
 
 
-    // const tempOpname = await TempOpname.firstOrCreate({
-    //   kode_brng,
-    //   kd_bangsal,
-    //   tanggal
-    // }, {
-    //   stok,
-    // })
+
 
     //store ke table opname
     try {
@@ -191,11 +186,12 @@ export default class OpnameController {
               kd_bangsal,
             })
             .update({
-              kode_brng,
-              kd_bangsal,
+              // kode_brng,
+              // kd_bangsal,
               stok: real,
-              no_batch,
-              no_faktur,
+              // no_batch,
+
+              // no_faktur,
             })
         } else {
           await Database.table('gudangbarang').insert({
@@ -224,6 +220,25 @@ export default class OpnameController {
             no_batch,
             no_faktur,
           })
+
+          //update expiredate di databarang
+          if (expire) {
+            try {
+              await Database.from('databarang').where({
+                kode_brng,
+              }).update({
+                expire
+              })
+
+
+            } catch (error) {
+              console.log(error);
+
+              response.json({
+                message: error,
+              })
+            }
+          }
           response.json({
             message: 'success',
           })

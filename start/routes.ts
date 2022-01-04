@@ -32,4 +32,5 @@ Route.group(() => {
   Route.get('/depo', 'OpnameController.depo')
   Route.get('/obat', 'OpnameController.obat')
   Route.post('/store', 'OpnameController.store')
+  Route.post('/pemutihan', 'PemutihanController.edit')
 }).prefix('/api/opname')
